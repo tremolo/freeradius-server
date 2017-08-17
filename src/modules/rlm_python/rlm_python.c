@@ -926,11 +926,13 @@ static int python_interpreter_init(rlm_python_t *inst, CONF_SECTION *conf)
 #if PY_VERSION_HEX > 0x03050000
 			{
 				inst->wide_path = Py_DecodeLocale(inst->python_path, strlen(inst->python_path));
-				PySys_SetPath(inst->wide_path);
+				const wchar_t *path = inst->wide_path;
+				PySys_SetPath(path);
 			}
 #else
 			{
-				PySys_SetPath(inst->python_path);
+				const char *path = inst->python_path;
+				PySys_SetPath(path);
 			}
 #endif
 		}
